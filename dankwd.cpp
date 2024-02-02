@@ -3,6 +3,7 @@
 #include <string>
 #include <unordered_set>
 #include <random>
+#include <windows.h>
 
 using namespace std;
 
@@ -12,12 +13,14 @@ unordered_set<string> loadPasswords(const string& filename) {
 
     if (!file.is_open()) {
         cerr << "Error opening " << filename << endl;
-    } else {
-        string line;
-        while (getline(file, line)) {
-            passwords.insert(line);
-        }
+        //exit function prematurely
+        return passwords;
     }
+    string line;
+    while (getline(file, line)) {
+        passwords.insert(line);
+    }
+    
 
     return passwords;
 }
@@ -31,23 +34,59 @@ void help()
     cout << "\t -p \t checks strength of password" << endl;
     cout << "\t -d \t checks how long it will take to crack password" << endl;
     cout << "\t -a \t does all the flags" << endl;
+    exit(0);
 }
 
-bool isInWordlists(const unordered_set<string>& rockYouPasswords, const unordered_set<string>& customPasswords, const unordered_set<string>& handsomePasswords, const string& password) {
-    return rockYouPasswords.find(password) != rockYouPasswords.end() ||
-           customPasswords.find(password) != customPasswords.end() ||
-           handsomePasswords.find(password) != handsomePasswords.end();
+bool isInWordlists(const vector<unordered_set<string>>& wordlists, const string& password) {
+    for (const auto& wordlist : wordlists) {
+        if (wordlist.find(password) != wordlist.end()) {
+            return true;
+        }
+    }
+    return false;
 }
 
 void test(string usrpswd)
 {
     cout << "Please wait while searching through wordlists..." << endl;
-    unordered_set<string> rockYou = loadPasswords("Wordlists/rockyou.txt");
-    unordered_set<string> xato = loadPasswords("Wordlists/xato-net-10-million-passwords.txt");
-    unordered_set<string> human = loadPasswords("Wordlists/realhuman_phill.txt");
-    bool safe = true;
+    string wordlistsFolderPath = "Wordlists";
+    vector<unordered_set<string>> allWordlists;
 
-    if(isInWordlists(rockYou, xato, human, usrpswd))
+    WIN32_FIND_DATA findFileData;
+    HANDLE hFind = FindFirstFile((wordlistsFolderPath + "\\*").c_str(), &findFileData);
+
+    if (hFind != INVALID_HANDLE_VALUE) {
+        do {
+            if (findFileData.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY) {
+                continue; // Skip directories
+            }
+
+            const string filePath = wordlistsFolderPath + "\\" + findFileData.cFileName;
+            cout << "Loading passwords from: " << filePath << endl;
+            allWordlists.push_back(loadPasswords(filePath));
+
+        } while (FindNextFile(hFind, &findFileData) != 0);
+
+        FindClose(hFind);
+    } else {
+        cerr << "No wordlists found in the 'Wordlists' folder. Exiting..." << endl;
+        return; // Exit the program with an error code
+    }
+
+    bool passwordFound = isInWordlists(allWordlists, usrpswd);
+
+    if(passwordFound)
+    {
+        cout << "Your password was found in one of the wordlists" << endl;
+    }
+    else
+    {
+        cout << "Your password was not found in any of the wordlists" << endl;
+    }
+
+    //bool safe = true;
+
+    /*if(isInWordlists(rockYou, xato, human, usrpswd))
     {
         cout << "Your password was found in one of the wordlists and is not secure" << endl;
         return;
@@ -56,22 +95,26 @@ void test(string usrpswd)
     {
         cout << "Your password was not found in our wordlists" << endl;
         return;
-    }
+    }*/
+    return;
 }
 
 void password()
 {
     //check password for uppercase, lowercase, special characters
+    cout << "-p" << endl;
 }
 
 void crack()
 {
     //calculate how long it will take to crack assuming it is a strong password
+    cout << "-c" << endl;
 }
 
 void all()
 {
     //do test(), password(), and crack()
+    cout << "-a" << endl;
 }
 
 int main(int argc, char *argv[])    //argc is the number of commandline arguments recieved, argv is the strings
@@ -94,11 +137,15 @@ int main(int argc, char *argv[])    //argc is the number of commandline argument
     }
 
     string flag = argv[1];
-    string usrpswd = argv[2];
-
     if(flag == "-h") //not working, everything else after working
         help();
-    else if (flag == "-t")
+
+
+    string usrpswd = argv[2];
+   
+    cout << flag << endl;
+
+    if (flag == "-t")
         test(usrpswd);
     else if (flag == "-p")
         password();
