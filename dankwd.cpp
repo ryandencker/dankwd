@@ -102,12 +102,6 @@ void test(string usrpswd)
     return;
 }
 
-void password(string usrpswd)
-{
-    //check password for uppercase, lowercase, special characters
-    cout << "-p" << endl;
-}
-
 bool hasNums(string usrpswd)
 {
     for (char c : usrpswd) {
@@ -148,6 +142,68 @@ bool hasSpecials(string usrpswd)
         }
     }
     return false;
+}
+
+void password(string usrpswd) //in progress
+{
+    bool nums = false;
+    bool lLetters = false;
+    bool uLetters = false;
+    bool specials = false;
+
+    string recommend = "We recommend passwords having lowercase letters, uppercase letters, numbers and special characters";
+    string weak = "This is a weak password";
+    string good = "this is a good password";
+    string strong = "This is a strong password";
+
+    if(usrpswd.length() < 10)
+    {
+        cout << " We would recommend a longer password. Passwords shorter than 10 characters will take hours to days to crack.";
+        exit(0);
+    }
+
+    if(hasNums(usrpswd))
+    {
+        nums = true;
+        cout << "password has nums" << endl;
+    }
+
+    if(haslLetters(usrpswd))
+    {
+        lLetters = true;
+        cout << "password has lower letters" << endl;
+    }
+
+    if(hasuLetters(usrpswd))
+    {
+        uLetters = true;
+        cout << "password has upper letters" << endl;
+    }
+
+    if(hasSpecials(usrpswd))
+    {
+        specials = true;
+        cout << "password has special characters" << endl;
+    }
+
+    if(nums == true && lLetters == false && uLetters == false && specials == false)
+    {
+        cout << "Your password only contains numbers in it." << weak << recommend;
+        exit(0);
+    }
+
+    if(nums == false && lLetters == true && uLetters == false && specials == false)
+    {
+        cout << "Your password only contains lowercase letters." << weak << recommend;
+        exit(0);
+    }
+
+    if(nums == false && lLetters == false && uLetters == true && specials == false)
+    {
+        cout << "Your password only contains uppercase letters." << recommend;
+    }
+
+
 }
 
 void crack(string usrpswd)
@@ -222,13 +278,13 @@ int main(int argc, char *argv[])    //argc is the number of commandline argument
     if (flag == "-t")
         test(usrpswd);
     else if (flag == "-p")
-        password(usrpswd);
+        password(usrpswd);  //inprogress
     else if (flag == "-d")
         crack(usrpswd);
     else if (flag == "-a")
         all();
     else
-        cout << "Unknown flag: for usage do -h" << endl;
+        cout << "Unknown flag: for usage do:  dankwd.exe -h" << endl;
 
     return 0;
 }
