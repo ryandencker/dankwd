@@ -153,7 +153,7 @@ void password(string usrpswd) //in progress
 
     string recommend = "We recommend passwords having lowercase letters, uppercase letters, numbers and special characters";
     string weak = "This is a weak password";
-    string good = "this is a good password";
+    string good = "this is a good password, but could be stronger";
     string strong = "This is a strong password";
 
     if(usrpswd.length() < 10)
@@ -165,25 +165,21 @@ void password(string usrpswd) //in progress
     if(hasNums(usrpswd))
     {
         nums = true;
-        cout << "password has nums" << endl;
     }
 
     if(haslLetters(usrpswd))
     {
         lLetters = true;
-        cout << "password has lower letters" << endl;
     }
 
     if(hasuLetters(usrpswd))
     {
         uLetters = true;
-        cout << "password has upper letters" << endl;
     }
 
     if(hasSpecials(usrpswd))
     {
         specials = true;
-        cout << "password has special characters" << endl;
     }
 
     if(nums == true && lLetters == false && uLetters == false && specials == false)
@@ -200,8 +196,14 @@ void password(string usrpswd) //in progress
 
     if(nums == false && lLetters == false && uLetters == true && specials == false)
     {
-        cout << "Your password only contains uppercase letters." << recommend;
+        cout << "Your password only contains uppercase letters." << weak << recommend;
     }
+
+    if(nums == false && lLetters == false && uLetters == false && specials == true)
+    {
+        cout << "Your password only contains special characters." << weak << recommend;
+    }
+
 
 
 }
