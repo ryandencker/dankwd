@@ -150,6 +150,8 @@ void password(string usrpswd) //in progress
     bool lLetters = false;
     bool uLetters = false;
     bool specials = false;
+    int totalCharacters = 0;
+    int combinations;
 
     string recommend = "We recommend passwords having lowercase letters, uppercase letters, numbers and special characters";
     string weak = "This is a weak password";
@@ -182,12 +184,12 @@ void password(string usrpswd) //in progress
         specials = true;
     }
 
-    if(nums == true && lLetters == false && uLetters == false && specials == false)
-    {
-        cout << "Your password only contains numbers in it." << weak << recommend;
-        exit(0);
-    }
+    
 
+
+
+
+/*
     if(nums == false && lLetters == true && uLetters == false && specials == false)
     {
         cout << "Your password only contains lowercase letters." << weak << recommend;
@@ -203,7 +205,10 @@ void password(string usrpswd) //in progress
     {
         cout << "Your password only contains special characters." << weak << recommend;
     }
+*/
+    
 
+    
 
 
 }
@@ -217,6 +222,8 @@ void crack(string usrpswd)
     bool lLetters = false;
     bool uLetters = false;
     bool specials = false; 
+    int combinations;
+    int totalCharacters = 0;
 
     if(hasNums(usrpswd))
     {
@@ -241,6 +248,16 @@ void crack(string usrpswd)
         specials = true;
         cout << "password has special characters";
     }
+
+    if (nums) totalCharacters += 10;        // 10 numbers (0-9)
+    if (lLetters) totalCharacters += 26;    // 26 lowercase letters (a-z)
+    if (uLetters) totalCharacters += 26;    // 26 uppercase letters (A-Z)
+    if (specials) totalCharacters += 32;    // 32 special characters 
+
+    combinations = pow(totalCharacters, usrpswd.length());
+
+    cout << "Total Combinations: " << combinations << endl;
+
 }
 
 void all()
@@ -281,7 +298,7 @@ int main(int argc, char *argv[])    //argc is the number of commandline argument
         test(usrpswd);
     else if (flag == "-p")
         password(usrpswd);  //inprogress
-    else if (flag == "-d")
+    else if (flag == "-c")
         crack(usrpswd);
     else if (flag == "-a")
         all();
