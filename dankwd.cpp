@@ -273,22 +273,17 @@ int main(int argc, char *argv[])    //argc is the number of commandline argument
     //random dankwd text
 
 
-    if(argc == 1)   //if user only runs the executable
+    if(argc == 1 || argc == 2)   //if user only runs the executable
     {
         help();
-        return 0;
     }
 
     if(argc > 3)    //if there are too many arguements getting passed
     {
         help();
-        return 0;
     }
 
     string flag = argv[1];
-    if(flag == "-h") //not working, everything else after working
-        help();
-
 
     string usrpswd = argv[2];
    
@@ -297,9 +292,9 @@ int main(int argc, char *argv[])    //argc is the number of commandline argument
     if (flag == "-t")
         test(usrpswd);
     else if (flag == "-p")
-        password(usrpswd);  //inprogress
+        password(usrpswd);  //in progress
     else if (flag == "-c")
-        crack(usrpswd);
+        crack(usrpswd);     //in progress
     else if (flag == "-a")
         all();
     else
