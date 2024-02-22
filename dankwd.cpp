@@ -74,19 +74,19 @@ void format(float seconds)
     long long minutes = static_cast<long long>(seconds / SECONDS_IN_MINUTE);
     seconds -= minutes * SECONDS_IN_MINUTE;
 
-    cout << years << " years, "
+    cout << "\n\nIt will take: " << years << " years, "
          << months << " months, "
          << days << " days, "
          << hours << " hours, "
          << minutes << " minutes, "
-         << seconds << " seconds" << endl;
+         << seconds << " seconds to crack your password with the attempts per second provided" << endl;
 
     exit(0);
 }
 
 void test(string usrpswd)
 {
-    cout << "Please wait while searching through wordlists..." << endl;
+    cout << "\nPlease wait while searching through wordlists...\n" << endl;
     string wordlistsFolderPath = "Wordlists";
     vector<unordered_set<string>> allWordlists;
 
@@ -326,7 +326,7 @@ void crack(string usrpswd)
         }
         else if(response == "e")
         {
-            cout << "How many attempts per second would you like to attempt to crack the password?\n\n";
+            cout << "\nHow many attempts per second would you like to attempt to crack the password?\n\n";
             cin >> response2;
             combinations = combinations/response2;
             format(combinations);
@@ -533,11 +533,11 @@ int main(int argc, char *argv[])    //argc is the number of commandline argument
     string usrpswd = argv[2];
 
     if (flag == "-t")
-        test(usrpswd);
+        test(usrpswd);      //finished (maybe add which wordlist password was found in)
     else if (flag == "-p")
         password(usrpswd);  //in progress
     else if (flag == "-c")
-        crack(usrpswd);     //in progress first
+        crack(usrpswd);     //finished
     else if (flag == "-a")
         all();
     else
