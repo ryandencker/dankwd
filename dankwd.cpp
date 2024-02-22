@@ -122,18 +122,6 @@ void test(string usrpswd)
         cout << "Your password was not found in any of the wordlists" << endl;
     }
 
-    //bool safe = true;
-
-    /*if(isInWordlists(rockYou, xato, human, usrpswd))
-    {
-        cout << "Your password was found in one of the wordlists and is not secure" << endl;
-        return;
-    }
-    else
-    {
-        cout << "Your password was not found in our wordlists" << endl;
-        return;
-    }*/
     return;
 }
 
@@ -188,14 +176,14 @@ void password(string usrpswd) //in progress
     int totalCharacters = 0;
     int combinations;
 
-    string recommend = "We recommend passwords having lowercase letters, uppercase letters, numbers and special characters";
+    string recommend = "Strong passwords have lowercase letters, uppercase letters, numbers and special characters";
     string weak = "This is a weak password";
     string good = "this is a good password, but could be stronger";
     string strong = "This is a strong password";
 
-    if(usrpswd.length() < 10)
+    if(usrpswd.length() < 8)
     {
-        cout << " We would recommend a longer password. Passwords shorter than 10 characters will take hours to days to crack.";
+        cout << " We would recommend a longer password. Passwords shorter than 8 characters will take hours to days to crack.";
         exit(0);
     }
 
@@ -219,32 +207,35 @@ void password(string usrpswd) //in progress
         specials = true;
     }
 
-    
+    if(nums) combinations +=1;
+    if(lLetters) combinations +=1;
+    if(uLetters) combinations +=1;
+    if(specials) combinations +=1;
 
-
-
-
-/*
-    if(nums == false && lLetters == true && uLetters == false && specials == false)
-    {
-        cout << "Your password only contains lowercase letters." << weak << recommend;
-        exit(0);
+    switch(combinations){
+        case 1:
+        {
+            cout << "You only have 1 character type in your password. " << recommend;
+            break;
+        }
+        case 2:
+        {
+            cout << "You only have 2 character types in your password. " << recommend;
+            break;
+        }
+        case 3:
+        {
+            cout << "You have 3 character types in your password";
+            break;
+        }
+        case 4:
+        {
+            cout << "This is a strong password. Good job :)";
+            break;
+        }
     }
-
-    if(nums == false && lLetters == false && uLetters == true && specials == false)
-    {
-        cout << "Your password only contains uppercase letters." << weak << recommend;
-    }
-
-    if(nums == false && lLetters == false && uLetters == false && specials == true)
-    {
-        cout << "Your password only contains special characters." << weak << recommend;
-    }
-*/
     
-
-    
-
+    exit(0);
 
 }
 
