@@ -86,7 +86,7 @@ void format(float seconds)
 
 void test(string usrpswd)
 {
-    cout << "\nPlease wait while searching through wordlists...\n" << endl;
+    cout << "Please wait while searching through wordlists...\n" << endl;
     string wordlistsFolderPath = "Wordlists";
     vector<unordered_set<string>> allWordlists;
 
@@ -174,9 +174,9 @@ void password(string usrpswd) //in progress
     bool uLetters = false;
     bool specials = false;
     int totalCharacters = 0;
-    int combinations;
+    int combinations = 0;
 
-    string recommend = "Strong passwords have lowercase letters, uppercase letters, numbers and special characters";
+    string recommend = "Strong passwords will have lowercase letters, uppercase letters, numbers and special characters";
     string weak = "This is a weak password";
     string good = "this is a good password, but could be stronger";
     string strong = "This is a strong password";
@@ -280,7 +280,7 @@ void crack(string usrpswd)
 
     combinations = pow(totalCharacters, usrpswd.length());
 
-    cout << "\nTotal Combinations: " << combinations << endl;
+    cout << "Total Combinations: " << combinations << endl;
 
     
 
@@ -507,6 +507,8 @@ int main(int argc, char *argv[])    //argc is the number of commandline argument
     
 
     danktext();
+
+    cout << "\n\n\n";
 
 
     if(argc == 1 || argc == 2)   //if user only runs the executable or doesnt provide a password
