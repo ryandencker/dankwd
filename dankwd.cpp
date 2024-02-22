@@ -51,6 +51,39 @@ bool isInWordlists(const vector<unordered_set<string>>& wordlists, const string&
     return false;
 }
 
+void format(float seconds)
+{
+    const long long SECONDS_IN_MINUTE = 60;
+    const long long SECONDS_IN_HOUR = 3600;
+    const long long SECONDS_IN_DAY = 86400;
+    const long long SECONDS_IN_MONTH = 2629746;  // Average seconds in a month (30.44 days)
+    const long long SECONDS_IN_YEAR = 31556952;  // Average seconds in a year (365.24 days)
+
+    long long years = static_cast<long long>(seconds / SECONDS_IN_YEAR);
+    seconds -= years * SECONDS_IN_YEAR;
+
+    long long months = static_cast<long long>(seconds / SECONDS_IN_MONTH);
+    seconds -= months * SECONDS_IN_MONTH;
+
+    long long days = static_cast<long long>(seconds / SECONDS_IN_DAY);
+    seconds -= days * SECONDS_IN_DAY;
+
+    long long hours = static_cast<long long>(seconds / SECONDS_IN_HOUR);
+    seconds -= hours * SECONDS_IN_HOUR;
+
+    long long minutes = static_cast<long long>(seconds / SECONDS_IN_MINUTE);
+    seconds -= minutes * SECONDS_IN_MINUTE;
+
+    cout << years << " years, "
+         << months << " months, "
+         << days << " days, "
+         << hours << " hours, "
+         << minutes << " minutes, "
+         << seconds << " seconds" << endl;
+
+    exit(0);
+}
+
 void test(string usrpswd)
 {
     cout << "Please wait while searching through wordlists..." << endl;
@@ -224,9 +257,10 @@ void crack(string usrpswd)
     bool lLetters = false;
     bool uLetters = false;
     bool specials = false; 
-    int combinations;
+    float combinations;
     int totalCharacters = 0;
     string response;
+    float response2;
 
     if(hasNums(usrpswd))
     {
@@ -267,32 +301,39 @@ void crack(string usrpswd)
         cout << "b: 10 million attempts per second\n";
         cout << "c: 100 million attempts per second\n";
         cout << "d: 1 billion attempts per second\n";
-        cout << "e: enter custom attempts per second\n";
+        cout << "e: enter custom attempts per second\n\n";
         cin >> response;
 
         if(response == "a")
         {
-
+            combinations = combinations/1000000;
+            format(combinations);
         }
         else if(response == "b")
         {
-
+            combinations = combinations/10000000;
+            format(combinations);
         }
         else if(response == "c")
         {
-
+            combinations = combinations/100000000;
+            format(combinations);
         }
         else if(response == "d")
         {
-
+            combinations = combinations/1000000000;
+            format(combinations);
         }
         else if(response == "e")
         {
-
+            cout << "How many attempts per second would you like to attempt to crack the password?\n\n";
+            cin >> response2;
+            combinations = combinations/response2;
+            format(combinations);
         }
         else
         {
-            cout << "choose from the selected options"; //finish this
+            cout << "Please choose from the selected options\n"; //finish this
         }
     }
 
@@ -490,8 +531,6 @@ int main(int argc, char *argv[])    //argc is the number of commandline argument
     string flag = argv[1];
 
     string usrpswd = argv[2];
-   
-    cout << flag << endl;
 
     if (flag == "-t")
         test(usrpswd);
