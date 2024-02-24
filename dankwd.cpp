@@ -38,7 +38,7 @@ void help()
     cout << "\t -t \t compares password to large wordlists of common passwords" << endl;
     cout << "\t -p \t checks strength of password" << endl;
     cout << "\t -c \t checks how long it will take to crack password assuming 1 billion guesses per second" << endl;
-    cout << "\t -a \t does all the flags" << endl;
+    cout << "\t -a \t does all the flags\n" << endl;
     exit(0);
 }
 
@@ -79,9 +79,8 @@ void format(float seconds)
          << days << " days, "
          << hours << " hours, "
          << minutes << " minutes, "
-         << seconds << " seconds to crack your password with the attempts per second provided" << endl;
+         << seconds << " seconds to crack your password with the attempts per second provided\n\n" << endl;
 
-    exit(0);
 }
 
 void test(string usrpswd)
@@ -107,7 +106,7 @@ void test(string usrpswd)
 
         FindClose(hFind);
     } else {
-        cerr << "No wordlists found in the 'Wordlists' folder. Exiting..." << endl;
+        cerr << "\nNo wordlists found in the 'Wordlists' folder.\n\n" << endl;
         return; // Exit the program with an error code
     }
 
@@ -115,11 +114,11 @@ void test(string usrpswd)
 
     if(passwordFound)
     {
-        cout << "Your password was found in one of the wordlists" << endl;
+        cout << "\nYour password was found in one of the wordlists\n\n" << endl;
     }
     else
     {
-        cout << "Your password was not found in any of the wordlists" << endl;
+        cout << "\nYour password was not found in any of the wordlists\n\n" << endl;
     }
 
     return;
@@ -176,16 +175,12 @@ void password(string usrpswd) //in progress
     int totalCharacters = 0;
     int combinations = 0;
 
-    string recommend = "Strong passwords will have lowercase letters, uppercase letters, numbers and special characters";
+    string recommend = "We recommend a stronger password. Strong passwords will have lowercase letters, uppercase letters, numbers and special characters\n\n";
     string weak = "This is a weak password";
     string good = "this is a good password, but could be stronger";
     string strong = "This is a strong password";
 
-    if(usrpswd.length() < 8)
-    {
-        cout << " We would recommend a longer password. Passwords shorter than 8 characters will take hours to days to crack.";
-        exit(0);
-    }
+    
 
     if(hasNums(usrpswd))
     {
@@ -212,6 +207,12 @@ void password(string usrpswd) //in progress
     if(uLetters) combinations +=1;
     if(specials) combinations +=1;
 
+    if(usrpswd.length() < 10)
+    {
+        cout << " We would recommend a longer password. Passwords shorter than 10 characters will take only hours to days to crack.\n\n";
+    }
+    else
+    {
     switch(combinations){
         case 1:
         {
@@ -225,17 +226,17 @@ void password(string usrpswd) //in progress
         }
         case 3:
         {
-            cout << "You have 3 character types in your password";
+            cout << "You have 3 character types in your password. This is a decent password but we would recommend having uppercase and lowercase letters, along with numbers and special characters\n\n";
             break;
         }
         case 4:
         {
-            cout << "This is a strong password. Good job :)";
+            cout << "This is a strong password. Good job :)\n\n";
             break;
         }
     }
+    }
     
-    exit(0);
 
 }
 
@@ -299,21 +300,25 @@ void crack(string usrpswd)
         {
             combinations = combinations/1000000;
             format(combinations);
+            break;
         }
         else if(response == "b")
         {
             combinations = combinations/10000000;
             format(combinations);
+            break;
         }
         else if(response == "c")
         {
             combinations = combinations/100000000;
             format(combinations);
+            break;
         }
         else if(response == "d")
         {
             combinations = combinations/1000000000;
             format(combinations);
+            break;
         }
         else if(response == "e")
         {
@@ -321,19 +326,24 @@ void crack(string usrpswd)
             cin >> response2;
             combinations = combinations/response2;
             format(combinations);
+            break;
         }
         else
         {
-            cout << "Please choose from the selected options\n"; //finish this
+            cout << "\nPlease choose from the selected options\n";
         }
     }
 
 }
 
-void all()
+void all(string pass)
 {
     //do test(), password(), and crack()
-    cout << "-a" << endl;
+    test(pass);
+    cout << "------------------------------------------------------------------------------------\n";
+    password(pass);
+    cout << "------------------------------------------------------------------------------------\n";
+    crack(pass);
 }
 
 void danktext()
@@ -532,7 +542,7 @@ int main(int argc, char *argv[])    //argc is the number of commandline argument
     else if (flag == "-c")
         crack(usrpswd);     //finished
     else if (flag == "-a")
-        all();
+        all(usrpswd);
     else
         cout << "Unknown flag: for usage do:  dankwd.exe -h" << endl;
 
