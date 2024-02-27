@@ -74,7 +74,7 @@ void format(float seconds)
     long long minutes = static_cast<long long>(seconds / SECONDS_IN_MINUTE);
     seconds -= minutes * SECONDS_IN_MINUTE;
 
-    cout << "\n\nIt will take: " << years << " years, "
+    cout << "\n\nIt will take about: " << years << " years, "
          << months << " months, "
          << days << " days, "
          << hours << " hours, "
@@ -283,6 +283,7 @@ void crack(string usrpswd)
 
     cout << "Total Combinations: " << combinations << endl;
 
+    combinations = combinations/2;
     
 
     while(true)
@@ -540,7 +541,7 @@ int main(int argc, char *argv[])    //argc is the number of commandline argument
     else if (flag == "-p")
         password(usrpswd);  //in progress
     else if (flag == "-c")
-        crack(usrpswd);     //finished
+        crack(usrpswd);     //finished (has some bugs)
     else if (flag == "-a")
         all(usrpswd);
     else
